@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Prerequisites
 *.d
 
@@ -68,7 +67,6 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
-=======
 cpp_*
 
 # build artifacts
@@ -76,4 +74,14 @@ build/
 *.exe
 *.obj
 *.o
->>>>>>> ea639997d3937606c5f65e265626c71ae2963b54
+
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+*.egg-info/
+
+# market data
+data/
