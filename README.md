@@ -53,17 +53,36 @@ from spotvol.synthetic import generate
 from spotvol.align import align_ticks
 from spotvol.features import build_features
 from spotvol.beta import estimate_beta
-from spotvol.plot import plot_spot_vol_beta
+from spotvol.plot import make_report_figure
 
 spot_df, option_df = generate(beta=-3.0, seed=42)
 aligned = align_ticks(spot_df, option_df)
 features = build_features(aligned)
-result = estimate_beta(features)     # BetaResult(beta, intercept, r_squared)
+result = estimate_beta(features)     # BetaResult(beta, intercept, r_squared, se_beta)
 
-plot_spot_vol_beta(features, result)
+make_report_figure(features, result)
 ```
 
 This is exactly the path exercised by `research/tests/test_pipeline.py`.
+`spotvol.plot` also exposes the individual panels
+(`plot_price_and_iv`, `plot_spot_vol_beta`, `plot_residuals`) and
+`plot_beta_recovery` for the sample-size study below.
+
+## Figures
+
+`python research/scripts/generate_figures.py` regenerates these from the
+synthetic pipeline.
+
+**Pipeline validation** — the raw spot/IV process, the fitted spot-vol
+relationship, and the fit residuals:
+
+![Spot-vol beta summary](research/figures/summary.png)
+
+**Beta recovery vs. sample size** — median recovered β (16th–84th
+percentile band across 30 seeds per point) against the injected β = -3.0,
+as the number of option ticks grows:
+
+![Beta recovery vs sample size](research/figures/beta_recovery.png)
 
 ## Roadmap
 

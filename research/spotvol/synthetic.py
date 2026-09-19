@@ -43,8 +43,11 @@ def generate(
 
     # option ticks at different irregular times within the same window
     opt_times = np.sort(rng.uniform(spot_times[0], spot_times[-1], n_option))
-    # snap each option time to nearest spot tick to get a sensible price
-    idx = np.searchsorted(spot_times, opt_times).clip(0, n_spot - 1)
+    # snap each option time to the most recent PRECEDING spot tick, matching
+    # align_ticks' backward-asof merge -- side="left" here would look ahead to
+    # a spot tick the option time hasn't reached yet, pricing the option off
+    # information the analysis pipeline can't see when it re-aligns ticks.
+    idx = (np.searchsorted(spot_times, opt_times, side="right") - 1).clip(0, n_spot - 1)
     mids = np.array([
         black_scholes_price(spot_prices[i], K, T, r, iv_values[i], is_call=True)
         for i in idx

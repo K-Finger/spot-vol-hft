@@ -24,6 +24,7 @@ def build_features(aligned: pd.DataFrame, is_call: bool = True) -> pd.DataFrame:
 
     return pd.DataFrame({
         "time": aligned["time"],
+        "spot": aligned["spot"],
         "mid": mid,
         "iv": iv,
         "d_log_spot": np.log(aligned["spot"] / aligned["spot"].shift(1)),
